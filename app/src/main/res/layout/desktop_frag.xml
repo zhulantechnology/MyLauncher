@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/wallpaper_01"
     android:orientation="horizontal"
+    android:paddingTop="25dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -21,11 +25,13 @@
             />
 
         <include
-            layout="@layout/layout_btn_settings"
+            layout="@layout/layout_btn_help"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="8dp"
             />
+
 
     </LinearLayout>
 
@@ -41,7 +47,20 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@android:color/holo_blue_light">
+        >
+
+        <include
+            layout="@layout/layout_btn_monitor"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <include
+            layout="@layout/layout_btn_photo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
