@@ -12,7 +12,8 @@ import com.ds05.mylauncher.R;
 public class HomeDisplayFragment extends Fragment {
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home_display_fragment, container, false);
         return rootView;
     }

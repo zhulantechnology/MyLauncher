@@ -7,7 +7,7 @@
     android:paddingLeft="8dp"
     android:paddingRight="8dp">
 
-    <ImageView
+    <com.ds05.mylauncher.view.CornerImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/ds05_home_bg" />
