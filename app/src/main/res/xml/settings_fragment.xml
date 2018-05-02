@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="key_settings_scan_qr_code"
+        android:icon="@drawable/ic_menu_scan_qr_code"
+        android:layout="@layout/icon_preference_layout"
+        android:widgetLayout="@layout/widget_layout_more_arrow"
+        android:title="@string/settings_str_scan_qr_code"
+        />
+
+</PreferenceScreen>

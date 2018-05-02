@@ -18,12 +18,13 @@ public class ModuleBaseFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mModuleActivity = (ModuleBaseActivity)getActivity();
+        mModuleActivity = (ModuleBaseActivity) getActivity();
     }
 
     public void jumpToFragment(ModuleBaseFragment frag) {
         mModuleActivity.jumpToFragment(frag);
     }
+
     public void jumpToFragment(Fragment frag) {
         mModuleActivity.jumpToFragment(frag);
     }
@@ -31,6 +32,7 @@ public class ModuleBaseFragment extends PreferenceFragment {
     public void setTitle(int resId) {
         mModuleActivity.setTitle(resId);
     }
+
     public void showTitleBar() {
         mModuleActivity.showTitleBar();
     }

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ds05.mylauncher.R;
+
 /**
  * Created by Jun.wang on 2018/5/1.
  */
