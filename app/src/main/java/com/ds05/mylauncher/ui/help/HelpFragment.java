@@ -101,7 +101,7 @@ public class HelpFragment extends ModuleBaseFragment implements ViewPager.OnPage
     @Override
     public void onPageSelected(int position) {
         int temp = position%mImageViews.length;
-        Log.e("XXX","temp===============:"+temp);
+        //Log.e("XXX","temp===============:"+temp);
         setImageBackground(temp);
     }
 
@@ -111,7 +111,7 @@ public class HelpFragment extends ModuleBaseFragment implements ViewPager.OnPage
      * @param selectItems
      */
     private void setImageBackground(int selectItems) {
-        Log.e("XXX","selectItems===============:"+selectItems);
+        //Log.e("XXX","selectItems===============:"+selectItems);
         for (int i = 0; i < tips.length; i++) {
             if (i == selectItems) {
                 tips[i].setBackgroundResource(R.drawable.page_indicator_focused);
