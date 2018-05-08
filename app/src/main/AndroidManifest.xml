@@ -18,8 +18,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ModuleBaseActivity" />
-        <activity android:name=".ui.help.HelpActivity"/>
-        <activity android:name=".ui.setting.SettingsActivity"></activity>
+
+        <activity android:name=".ui.setting.SettingsActivity" />
+        <activity android:name=".ui.help.HelpActivity" />
+        <activity android:name=".ui.monitor.MonitorActivity" />
     </application>
 
 </manifest>

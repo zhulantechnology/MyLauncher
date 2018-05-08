@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.ds05.mylauncher.R;
 import com.ds05.mylauncher.ui.help.HelpActivity;
+import com.ds05.mylauncher.ui.monitor.MonitorActivity;
 import com.ds05.mylauncher.ui.setting.SettingsActivity;
 
 public class DesktopFragment extends BaseFragment implements View.OnClickListener{
@@ -60,7 +61,7 @@ public class DesktopFragment extends BaseFragment implements View.OnClickListene
                 startActivity(new Intent(getContext(), HelpActivity.class));
                 break;
             case R.id.id_monitor:
-                //startActivity(new Intent(getContext(), MonitorActivity.class));
+                startActivity(new Intent(getContext(), MonitorActivity.class));
                 break;
             case R.id.id_photo:
                 Intent intent = new Intent();
