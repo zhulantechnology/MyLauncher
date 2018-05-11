@@ -3,6 +3,7 @@ package com.ds05.mylauncher.common.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.ds05.mylauncher.LauncherApplication;
 import com.ds05.mylauncher.R;
@@ -208,6 +209,123 @@ public class PrefDataManager {
     }
     public static void setShootNumber(int number) {
         setInt(COMMON_PREF_DATA, "common_shoot_number", number);
+    }
+
+    public static long getAutoAlarmTime() {
+        String defIndex = LauncherApplication.getContext()
+                .getResources().getString(R.string.def_intelligent_alarm_time);
+        String ret = getString(APP_PREF_SETTINGS, MonitorFragment.KEY_INTELL_ALARM_TIME, defIndex);
+        int index = Integer.parseInt(ret);
+        if(index < 0) {
+            return LauncherApplication.getContext()
+                    .getResources().getIntArray(R.array.array_auto_alarm_time)[Integer.parseInt(defIndex)];
+        } else {
+            return LauncherApplication.getContext()
+                    .getResources().getIntArray(R.array.array_auto_alarm_time)[index];
+        }
+    }
+    public static int getAutoAlarmTimeIndex() {
+        String def = LauncherApplication.getContext()
+                .getResources().getString(R.string.def_intelligent_alarm_time);
+        return Integer.parseInt(getString(APP_PREF_SETTINGS, MonitorFragment.KEY_INTELL_ALARM_TIME, def));
+
+    }
+    public static void setAutoAlarmTime(long time) {
+        int[] defs = LauncherApplication.getContext()
+                .getResources().getIntArray(R.array.array_auto_alarm_time);
+        int i = 0;
+        for(; i < defs.length; i++) {
+            if(defs[i] == time) break;
+        }
+
+        Log.d("pp","########### time = " + time);
+        Log.d("pp","########### i = " + i);
+
+        if(i >= 0 && i < defs.length && defs[i] == time) {
+            Log.d("pp","###########setString");
+            setString(APP_PREF_SETTINGS, MonitorFragment.KEY_INTELL_ALARM_TIME, i + "");
+        }
+    }
+
+    public static long getAlarmIntervalTime() {
+        String defIndex = LauncherApplication.getContext()
+                .getResources().getString(R.string.def_alarm_interval_time);
+        String ret = getString(APP_PREF_SETTINGS, MonitorFragment.KEY_ALARM_INTERVAL_TIME, defIndex);
+        int index = Integer.parseInt(ret);
+        if(index < 0) {
+            return LauncherApplication.getContext()
+                    .getResources().getIntArray(R.array.array_alarm_interval_time)[Integer.parseInt(defIndex)];
+        } else {
+            return LauncherApplication.getContext()
+                    .getResources().getIntArray(R.array.array_alarm_interval_time)[index];
+        }
+    }
+    public static void setAlarmIntervalTime(long time) {
+        int[] defs = LauncherApplication.getContext()
+                .getResources().getIntArray(R.array.array_alarm_interval_time);
+        int i = 0;
+        for(; i < defs.length; i++) {
+            if(defs[i] == time) break;
+        }
+
+        if(i >= 0 && i < defs.length && defs[i] == time) {
+            setString(APP_PREF_SETTINGS, MonitorFragment.KEY_ALARM_INTERVAL_TIME, i + "");
+        }
+    }
+
+    public static MonitorSensitivity getHumanMonitorSensi() {
+        String index = LauncherApplication.getContext()
+                .getResources().getString(R.string.def_mimonitoring_sensitivity);
+
+        int sensi = Integer.parseInt(getString(APP_PREF_SETTINGS,
+                MonitorFragment.KEY_MONITORING_SENS, index));
+
+        if(sensi == 0)
+            return MonitorSensitivity.High;
+        else if(sensi == 1) {
+            return MonitorSensitivity.Low;
+        } else {
+            return null;
+        }
+    }
+    public static void setHumanMonitorSensi(int sensi) {
+        int index = -1;
+        if(sensi == MonitorSensitivity.High.sensitivity())
+            index = 0;
+        else if(sensi == MonitorSensitivity.Low.sensitivity())
+            index = 1;
+
+        if(index >= 0) {
+            setString(APP_PREF_SETTINGS, MonitorFragment.KEY_MONITORING_SENS, index + "");
+        }
+    }
+
+    public static AutoAlarmSound getAlarmSound() {
+        String index = LauncherApplication.getContext()
+                .getResources().getString(R.string.def_auto_alarm_sound);
+        int tmp = Integer.parseInt(getString(APP_PREF_SETTINGS, MonitorFragment.KEY_ALARM_SOUND, index));
+        if(tmp == 0)
+            return AutoAlarmSound.Silence;
+        else if(tmp == 1)
+            return AutoAlarmSound.Alarm;
+        else if(tmp == 2)
+            return AutoAlarmSound.Scream;
+        else
+            return null;
+    }
+    public static void setAlarmSound(int i) {
+        int index = -1;
+        if(i == AutoAlarmSound.Silence.sound()) {
+            index = 0;
+        } else if(i == AutoAlarmSound.Alarm.sound()) {
+            index = 1;
+        } else if(i == AutoAlarmSound.Scream.sound()) {
+            index = 2;
+        }
+
+        if(index >= 0) {
+            setString(APP_PREF_SETTINGS, MonitorFragment.KEY_ALARM_SOUND, index + "");
+        }
     }
 
 
