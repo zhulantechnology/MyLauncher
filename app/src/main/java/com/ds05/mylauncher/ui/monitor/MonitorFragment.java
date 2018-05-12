@@ -10,6 +10,7 @@ import android.view.View;
 import com.ds05.mylauncher.ModuleBaseFragment;
 import com.ds05.mylauncher.R;
 import com.ds05.mylauncher.common.manager.PrefDataManager;
+import com.ds05.mylauncher.view.ListPreferenceExt;
 
 /**
  * Created by Jun.wang on 2018/5/6.
@@ -96,16 +97,15 @@ public class MonitorFragment extends ModuleBaseFragment {
         sensListPreference.setValueIndex(sens);
 
         // alarm sound
-/*        if((PrefDataManager.getAlarmSound()).equals(Silence)){
+        if((PrefDataManager.getAlarmSound()).equals(Silence)){
             alarmsound = 0;
-
         }else if((PrefDataManager.getAlarmSound()).equals(Alarm)){
             alarmsound = 1;
         }else if((PrefDataManager.getAlarmSound()).equals(Scream)){
             alarmsound = 2;
         }
         ListPreferenceExt alarmsoundListPreferenceExt = (ListPreferenceExt)findPreference(KEY_ALARM_SOUND);
-        alarmsoundListPreferenceExt.setValueIndex(alarmsound);*/
+        alarmsoundListPreferenceExt.setValueIndex(alarmsound);
     }
 
     @Override

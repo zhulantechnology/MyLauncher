@@ -36,7 +36,7 @@
         android:entries="@array/monitor_str_mimonitoring_sensitivity_entry"
         android:entryValues="@array/monitor_str_monitoring_sensitivity_values"
         android:defaultValue="@string/def_mimonitoring_sensitivity"/>
-    <ListPreference
+    <com.ds05.mylauncher.view.ListPreferenceExt
         android:key="key_auto_alarm_sound"
         android:icon="@drawable/ic_menu_auto_alarm_sound"
         android:layout="@layout/icon_preference_layout"
