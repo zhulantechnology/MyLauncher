@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.preference.ListPreference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.AdapterView;
 
 /**
@@ -38,7 +39,17 @@ public class ListPreferenceExt extends ListPreference {
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
+        if (mCurrIndex == getValueIndex()) {
+            return;
+        }
+
+        if (positiveResult) {
+            String value = getEntryValues()[mCurrIndex].toString();
+            Log.e("XXX", "the selected value string-----: " + value);
+            if (callChangeListener(value)) {
+                setValue(value);
+            }
+        }
     }
 
     @Override
