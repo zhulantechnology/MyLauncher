@@ -2,6 +2,9 @@ package com.ds05.mylauncher;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+
+import com.ds05.mylauncher.service.LauncherService;
 
 /**
  * Created by Jun.wang on 2018/5/9.
@@ -15,6 +18,8 @@ public class LauncherApplication extends Application {
         super.onCreate();
 
         mContext = getApplicationContext();
+
+        startService(new Intent(LauncherApplication.getContext(), LauncherService.class));
     }
 
     public static Context getContext() {

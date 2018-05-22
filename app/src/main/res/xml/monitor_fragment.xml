@@ -45,6 +45,14 @@
         android:entries="@array/monitor_str_auto_alarm_sound_entry"
         android:entryValues="@array/monitor_str_auto_alarm_sound_values"
         android:defaultValue="@string/def_auto_alarm_sound"/>
+    <com.ds05.mylauncher.view.DialogSeekBarPreference
+        android:key="key_auto_alarm_volume"
+        android:icon="@drawable/ic_menu_auto_alarm_volume"
+        android:layout="@layout/icon_preference_layout"
+        android:widgetLayout="@layout/widget_layout_more_arrow"
+        android:title="@string/monitor_str_auto_alarm_volume"
+        android:dialogTitle="@string/monitor_str_auto_alarm_volume"
+        android:dialogLayout="@layout/pref_seekbar"/>
     <ListPreference
         android:key="key_shooting_mode"
         android:icon="@drawable/ic_menu_shooting_mode"

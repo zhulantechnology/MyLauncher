@@ -97,18 +97,18 @@ public class PrefDataManager {
     }
     //MonitorSensitivity end
 
-    //AlarmMode start
-    public enum AlarmMode {
+    //CaptureMode start
+    public enum CaptureMode {
         Recorder(1), Capture(0);
 
         private int mode;
-        AlarmMode(int mode) {
+        CaptureMode(int mode) {
             this.mode = mode;
         }
         public int mode() {
             return mode;
         }
-        public static AlarmMode get(int i) {
+        public static CaptureMode get(int i) {
             switch(i) {
                 case 0:
                     return Capture;
@@ -119,7 +119,7 @@ public class PrefDataManager {
             }
         }
     }
-    //AlarmMode end
+    //CaptureMode end
 
     //AutoAlarmSound start
     public enum AutoAlarmSound {
@@ -327,6 +327,54 @@ public class PrefDataManager {
             setString(APP_PREF_SETTINGS, MonitorFragment.KEY_ALARM_SOUND, index + "");
         }
     }
+
+    public static CaptureMode getAlarmMode() {
+        String index = LauncherApplication.getContext()
+                .getResources().getString(R.string.def_shooting_mode);
+        int tmp = Integer.parseInt(getString(APP_PREF_SETTINGS, MonitorFragment.KEY_SHOOTING_MODE, index));
+        if(tmp == 0)
+            return CaptureMode.Capture;
+        else
+            return CaptureMode.Recorder;
+    }
+    public static void setAlarmMode(int mode) {
+        int index = -1;
+        if(mode == CaptureMode.Capture.mode())
+            //index = 0;
+            index = 0;
+        else if(mode == CaptureMode.Recorder.mode())
+            // index = 2;
+            index = 1;
+        Log.d("pp"," index = " + index);
+        if(index >= 0) {
+            setString(APP_PREF_SETTINGS, MonitorFragment.KEY_SHOOTING_MODE, index + "");
+        }
+    }
+
+    //Doorbell sound
+/*    public static int getDoorbellSoundIndex() {
+        Context ctx = LauncherApplication.getContext();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String def = ctx.getString(R.string.def_doorbell_sound);
+        String index = pref.getString(DoorbellSettings.KEY_DOORBELL_SOUND, def);
+        return Integer.parseInt(index);
+    }
+    public static void setDoorbellSoundIndex(int i) {
+        int index = -1;
+        if(i == DoorbellSound.ding_dang.sound_door()) {
+            index = 0;
+        } else if(i == DoorbellSound.ding_dong.sound_door()) {
+            index = 1;
+        } else if(i == DoorbellSound.dong_dong.sound_door()) {
+            index = 2;
+        } else if(i == DoorbellSound.ji_cu_qiao_men.sound_door()){
+            index = 3;
+        }
+
+        if(index >= 0) {
+            setString(APP_PREF_SETTINGS, DoorbellSettings.KEY_DOORBELL_SOUND, index + "");
+        }
+    }*/
 
 
     /************ Base Method **********/

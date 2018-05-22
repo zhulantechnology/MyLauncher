@@ -6,10 +6,13 @@ import android.preference.Preference;
 import android.preference.SwitchPreference;
 import android.util.Log;
 import android.view.View;
+import android.widget.SeekBar;
 
 import com.ds05.mylauncher.ModuleBaseFragment;
 import com.ds05.mylauncher.R;
 import com.ds05.mylauncher.common.manager.PrefDataManager;
+import com.ds05.mylauncher.service.SoundManager;
+import com.ds05.mylauncher.view.DialogSeekBarPreference;
 import com.ds05.mylauncher.view.ListPreferenceExt;
 
 /**
@@ -18,8 +21,8 @@ import com.ds05.mylauncher.view.ListPreferenceExt;
 
 
 
-//import static com.ds05.mylauncher.common.manager.PrefDataManager.AlarmMode.Capture;
-//import static com.ds05.mylauncher.common.manager.PrefDataManager.AlarmMode.Recorder;
+import static com.ds05.mylauncher.common.manager.PrefDataManager.CaptureMode.Capture;
+import static com.ds05.mylauncher.common.manager.PrefDataManager.CaptureMode.Recorder;
 import static com.ds05.mylauncher.common.manager.PrefDataManager.AutoAlarmSound.Alarm;
 import static com.ds05.mylauncher.common.manager.PrefDataManager.AutoAlarmSound.Scream;
 import static com.ds05.mylauncher.common.manager.PrefDataManager.AutoAlarmSound.Silence;
@@ -29,7 +32,7 @@ import static com.ds05.mylauncher.common.manager.PrefDataManager.MonitorSensitiv
 //import static com.ds05.mylauncher.service.HWSink.AUTO_ALARM_TIME_3SEC;
 
 
-public class MonitorFragment extends ModuleBaseFragment {
+public class MonitorFragment extends ModuleBaseFragment implements Preference.OnPreferenceChangeListener{
 
     public static final String KEY_HUMAN_MONIOTOR = "key_human_monitor";
     public static final String KEY_INTELL_ALARM_TIME = "key_intelligent_alarm_time";
@@ -38,6 +41,8 @@ public class MonitorFragment extends ModuleBaseFragment {
     public static final String KEY_ALARM_SOUND = "key_auto_alarm_sound";
     public static final String KEY_ALARM_VOLUME = "key_auto_alarm_volume";
     public static final String KEY_SHOOTING_MODE = "key_shooting_mode";
+
+    private SoundManager mSoundManager;
 
     private static final String[] KEYS = {
             KEY_INTELL_ALARM_TIME,
@@ -51,11 +56,13 @@ public class MonitorFragment extends ModuleBaseFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.monitor_fragment);
 
+        mSoundManager = SoundManager.getInstance();
+
         int intervalTime = 0;
         int alarmTime = 0;
         int sens = 0;
         int alarmsound = 0;
-        int alarmmode = 0;
+        int captureMode = 0;
 
         // humanMonitor
         SwitchPreference humanmonitorSwitchPreference =
@@ -106,12 +113,37 @@ public class MonitorFragment extends ModuleBaseFragment {
         }
         ListPreferenceExt alarmsoundListPreferenceExt = (ListPreferenceExt)findPreference(KEY_ALARM_SOUND);
         alarmsoundListPreferenceExt.setValueIndex(alarmsound);
+
+        if(PrefDataManager.getAlarmMode().equals(Capture)){
+            captureMode = 0;
+        }else if(PrefDataManager.getAlarmMode().equals(Recorder)){
+            captureMode = 1;
+        }
+        ListPreference captureModeListPreference = (ListPreference)findPreference(KEY_SHOOTING_MODE);
+        captureModeListPreference.setValueIndex(captureMode);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setTitle(R.string.string_monitor);
+        
+        boolean humanMonitorState =PrefDataManager.getHumanMonitorState();
+        if( humanMonitorState == true ){
+            findPreference(KEY_INTELL_ALARM_TIME).setEnabled(true);
+            findPreference(KEY_ALARM_INTERVAL_TIME).setEnabled(true);
+            findPreference(KEY_MONITORING_SENS).setEnabled(true);
+            findPreference(KEY_ALARM_SOUND).setEnabled(true);
+            findPreference(KEY_ALARM_VOLUME).setEnabled(true);
+            findPreference(KEY_SHOOTING_MODE).setEnabled(true);
+        }else {
+            findPreference(KEY_INTELL_ALARM_TIME).setEnabled(false);
+            findPreference(KEY_ALARM_INTERVAL_TIME).setEnabled(false);
+            findPreference(KEY_MONITORING_SENS).setEnabled(false);
+            findPreference(KEY_ALARM_SOUND).setEnabled(false);
+            findPreference(KEY_ALARM_VOLUME).setEnabled(false);
+            findPreference(KEY_SHOOTING_MODE).setEnabled(false);
+        }
     }
 
     @Override
@@ -120,13 +152,51 @@ public class MonitorFragment extends ModuleBaseFragment {
 
         Preference preference;
         preference = findPreference(KEY_INTELL_ALARM_TIME);
-        if (preference instanceof ListPreference) {
-            ListPreference listPreference = (ListPreference) preference;
-            Log.e("XXX", "Integer.parseInt(listPreference.getValue())---:" + Integer.parseInt(listPreference.getValue()));
-            preference.setSummary(listPreference.getEntries()
-                    [Integer.parseInt(listPreference.getValue())]);
-
+        for(int i = 0; i < KEYS.length; i++) {
+            preference = findPreference(KEYS[i]);
+            preference.setOnPreferenceChangeListener(this);
+            if(preference instanceof ListPreference) {
+                ListPreference listPreference =  (ListPreference)preference;
+                preference.setSummary(listPreference
+                        .getEntries()[Integer.parseInt(listPreference.getValue())]);
+            }
         }
+
+        final ListPreferenceExt soundPref = (ListPreferenceExt)findPreference(KEY_ALARM_SOUND);
+        soundPref.setOnPreferenceChangeListener(this);
+        soundPref.setSummary(soundPref.getEntries()[Integer.parseInt(soundPref.getValue())]);
+        soundPref.setOnListItemClickListener(new ListPreferenceExt.OnListItemClickListener() {
+            @Override
+            public void onItemClick(int index) {
+                if(index == 0) return;
+
+                mSoundManager.testAlarmSound(index - 1, mSoundManager.getAlarmSoundVolume());
+            }
+        });
+
+        DialogSeekBarPreference volumePref = (DialogSeekBarPreference)findPreference(KEY_ALARM_VOLUME);
+        volumePref.setOnPreferenceChangeListener(this);
+        volumePref.setProgressChangedListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int index = Integer.parseInt(soundPref.getValue());
+                if(index == 0) return;
+                mSoundManager.testAlarmSound(index - 1, seekBar.getProgress() / 10f);
+            }
+        });
+        volumePref.setMax(10);
+        volumePref.setProgress((int)(PrefDataManager.getAlarmSoundVolume() * 10));
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        return false;
     }
 }
 
