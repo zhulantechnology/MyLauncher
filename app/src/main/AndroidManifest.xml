@@ -18,14 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity android:name=".ModuleBaseActivity" />
         <activity android:name=".ui.setting.SettingsActivity" />
         <activity android:name=".ui.help.HelpActivity" />
         <activity android:name=".ui.monitor.MonitorActivity" />
 
-        <service android:name=".service.LauncherService"/>
+        <service android:name=".service.LauncherService" />
 
+        <activity android:name=".qrcode.QRCodeScanActivity"></activity>
     </application>
 
 </manifest>
