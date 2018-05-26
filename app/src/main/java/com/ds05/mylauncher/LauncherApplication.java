@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
+import com.ds05.mylauncher.common.ConnectUtils;
 import com.ds05.mylauncher.service.LauncherService;
 
 /**
@@ -20,6 +21,8 @@ public class LauncherApplication extends Application {
         mContext = getApplicationContext();
 
         startService(new Intent(LauncherApplication.getContext(), LauncherService.class));
+
+        ConnectUtils.NETWORK_IS_OK = ConnectUtils.isNetAvailable(mContext);
     }
 
     public static Context getContext() {

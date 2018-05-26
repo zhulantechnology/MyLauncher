@@ -8,6 +8,11 @@
         android:title="@string/settings_str_scan_qr_code"
         />
 
+    <SwitchPreference
+        android:key="key_Settings_wifi"
+        android:icon="@drawable/ic_menu_wifi"
+        android:layout="@layout/icon_preference_layout"
+        android:title="@string/settings_str_wifi"/>
     <Preference
         android:key="key_Settings_wifi"
         android:icon="@drawable/ic_menu_wifi"

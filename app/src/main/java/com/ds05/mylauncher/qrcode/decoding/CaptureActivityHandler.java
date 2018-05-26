@@ -68,6 +68,7 @@ public final class CaptureActivityHandler extends Handler {
 
   @Override
   public void handleMessage(Message message) {
+    Log.e("XXX", "message.what---------:" + message.what);
     switch (message.what) {
       case R.id.auto_focus:
         if (state == State.PREVIEW) {
@@ -84,6 +85,7 @@ public final class CaptureActivityHandler extends Handler {
         Bundle bundle = message.getData();
         Bitmap barcode = bundle == null ? null :
             (Bitmap) bundle.getParcelable(DecodeThread.BARCODE_BITMAP);
+        Log.e("XXX", "decode_succeeded---------OK");
         activity.handleDecode((Result) message.obj, barcode);
         break;
       case R.id.decode_failed:

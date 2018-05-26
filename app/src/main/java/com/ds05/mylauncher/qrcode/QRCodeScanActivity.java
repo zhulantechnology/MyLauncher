@@ -13,6 +13,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -26,6 +27,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Vector;
 
 public class QRCodeScanActivity extends Activity implements SurfaceHolder.Callback{
@@ -200,6 +202,7 @@ public class QRCodeScanActivity extends Activity implements SurfaceHolder.Callba
                     break;
                 }
                 String[] wifiInfo = obj.getText().split(",");
+               // Log.e("XXX", "handleDecode------wifiInfo---:" + Arrays.toString(wifiInfo));
                 if (wifiInfo.length == 2 || wifiInfo.length == 3) {
                     Intent intent = new Intent();
                     intent.putExtra(EXTRA_QRCODE_RESULT, obj.getText());
@@ -240,12 +243,14 @@ public class QRCodeScanActivity extends Activity implements SurfaceHolder.Callba
                 Intent intent = new Intent();
                 intent.setAction("com.ds05.Broadcast.ToServer.NOTIFY_QRCODE_RESULT");
                 String [] arrs=obj.getText().split(",");
-                intent.putExtra("QRCodeResult_UserId",arrs[0]);
-                intent.putExtra("QRCodeResult_WifiSSID",arrs[1]);
-                intent.putExtra("QRCodeResult_WifiPassword",arrs[2]);
-                // Uri content_url = Uri.parse(obj.getText());
-                // intent.setData(content_url);
-                LauncherApplication.getContext().sendBroadcast(intent);
+                if(arrs.length == 3) {
+                    intent.putExtra("QRCodeResult_UserId", arrs[0]);
+                    intent.putExtra("QRCodeResult_WifiSSID", arrs[1]);
+                    intent.putExtra("QRCodeResult_WifiPassword", arrs[2]);
+                    // Uri content_url = Uri.parse(obj.getText());
+                    // intent.setData(content_url);
+                    LauncherApplication.getContext().sendBroadcast(intent);
+                }
                 //vincent add end
                 finish();
             }
