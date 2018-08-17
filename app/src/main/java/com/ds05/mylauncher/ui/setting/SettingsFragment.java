@@ -1,12 +1,15 @@
 package com.ds05.mylauncher.ui.setting;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +17,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -132,13 +136,65 @@ public class SettingsFragment extends ModuleBaseFragment
         //langPref.setOnPreferenceChangeListener(this);
     }
 
+    /**
+     * 申请指定的权限.
+     */
+    public void requestPermission(int code, String... permissions) {
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            requestPermissions(permissions, code);
+        }
+    }
+    /**
+     * 判断是否有指定的权限
+     */
+    public boolean hasPermission(String... permissions) {
+
+        for (String permisson : permissions) {
+            if (ContextCompat.checkSelfPermission(getActivity(), permisson)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case HARDWEAR_CAMERA_CODE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    doOpenCameraQR();
+                }
+                break;
+        }
+    }
+
+    public void doOpenCameraQR() {
+        Intent intent = new Intent(getActivity(), QRCodeScanActivity.class);
+        intent.putExtra(QRCodeScanActivity.EXTRA_REQ_REASON, QRCodeScanActivity.REASON_GET_WIFI);
+        startActivityForResult(intent, QRCodeScanActivity.ACT_REQUEST_CODE_GET_WIFI);
+    }
+
+    public static final int WRITE_READ_EXTERNAL_CODE = 0x01;
+    public static final String[] WRITE_READ_EXTERNAL_PERMISSION = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE};
+
+    public static final int HARDWEAR_CAMERA_CODE = 0x02;
+    public static final String[] HARDWEAR_CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         String key = preference.getKey();
         if (key.equals(KEY_QR_CODE)) {
-            Intent intent = new Intent(getActivity(), QRCodeScanActivity.class);
-            intent.putExtra(QRCodeScanActivity.EXTRA_REQ_REASON, QRCodeScanActivity.REASON_GET_WIFI);
-            startActivityForResult(intent, QRCodeScanActivity.ACT_REQUEST_CODE_GET_WIFI);
+            if (hasPermission(HARDWEAR_CAMERA_PERMISSION)) {
+                Intent intent = new Intent(getActivity(), QRCodeScanActivity.class);
+                intent.putExtra(QRCodeScanActivity.EXTRA_REQ_REASON, QRCodeScanActivity.REASON_GET_WIFI);
+                startActivityForResult(intent, QRCodeScanActivity.ACT_REQUEST_CODE_GET_WIFI);
+            } else {
+                requestPermission(HARDWEAR_CAMERA_CODE, HARDWEAR_CAMERA_PERMISSION);
+            }
+
             return true;
         }
 
